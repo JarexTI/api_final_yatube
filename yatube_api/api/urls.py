@@ -7,13 +7,15 @@ from .views import (CommentViewSet, FollowViewSet, GroupViewSet, PostViewSet,
                     UserRegistrationView)
 
 router = DefaultRouter()
-router.register('posts', PostViewSet)
-router.register(r'posts/(?P<post_id>\d+)/comments', CommentViewSet)
-router.register('groups', GroupViewSet)
-router.register('follow', FollowViewSet)
+router.register('posts', PostViewSet, basename='post')
+router.register(
+    r'posts/(?P<post_id>\d+)/comments', CommentViewSet, basename='comment'
+)
+router.register('groups', GroupViewSet, basename='group')
 
 urlpatterns = [
     path('v1/', include(router.urls)),
+    path('v1/follow/', FollowViewSet.as_view()),
     path('v1/jwt/create/', TokenObtainPairView.as_view()),
     path('v1/jwt/refresh/', TokenRefreshView.as_view()),
     path('v1/jwt/verify/', TokenVerifyView.as_view()),
